@@ -1,6 +1,9 @@
 import os 
 def get_files_info(working_directory, directory=None):
-    desired_path = os.path.join(working_directory, directory)
+    abs_working_path = os.path.abspath(working_directory)
+    desired_path = abs_working_path
+    if directory is not None:
+        desired_path = os.path.join(desired_path,directory)
     is_in_workingpath = os.path.abspath(desired_path).startswith(os.path.abspath(working_directory))
 
     if not is_in_workingpath:
