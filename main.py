@@ -3,7 +3,7 @@ import sys
 from dotenv import load_dotenv
 from google import genai
 from google.genai import types
-
+from functions.config import *
 
 def main():
 
@@ -22,10 +22,12 @@ def main():
     types.Content(role="user", parts=[types.Part(text=user_input)]),
     ]
 
-    response = client.models.generate_content(model ="gemini-2.0-flash-001", contents =messages)
+    response = client.models.generate_content(model ="gemini-2.0-flash-001", 
+                                              contents =messages,
+                                              config=types.GenerateContentConfig(system_instruction=SYSTEM_PROMPT))
 
+    print(f"User prompt:{str(response.text)}")
     if verbose:       
-        print(f"User prompt:{str(response.text)}")
         print(f"Prompt tokens: {str(response.usage_metadata.prompt_token_count)}")
         print(f"Response tokens: {str(response.usage_metadata.candidates_token_count)}")
 
