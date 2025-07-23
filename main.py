@@ -24,9 +24,14 @@ def main():
 
     response = client.models.generate_content(model ="gemini-2.0-flash-001", 
                                               contents =messages,
-                                              config=types.GenerateContentConfig(system_instruction=SYSTEM_PROMPT))
+                                              config=types.GenerateContentConfig(tools =[available_functions], system_instruction=SYSTEM_PROMPT))
+ 
+    if response.function_calls: 
+       for function_call_part in response.function_calls:     
+        print(f"Calling function: {function_call_part.name}({function_call_part.args})")
 
     print(f"User prompt:{str(response.text)}")
+    
     if verbose:       
         print(f"Prompt tokens: {str(response.usage_metadata.prompt_token_count)}")
         print(f"Response tokens: {str(response.usage_metadata.candidates_token_count)}")
