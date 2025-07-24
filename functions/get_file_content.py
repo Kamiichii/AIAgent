@@ -1,4 +1,5 @@
 import os
+from google.genai import types
 from .config import CHARACTER_LIMIT
 def get_file_content(working_directory, file_path):
     desired_path = os.path.join(os.path.abspath(working_directory),file_path)
@@ -20,7 +21,19 @@ def get_file_content(working_directory, file_path):
     except Exception as e:
         return f"Error: {e}"
             
-           
+schema_get_files_content = types.FunctionDeclaration(
+        name="get_file_content",
+        description=f"Prints the contents of a file and turncate it if its more than {CHARACTER_LIMIT} characters, constrained to the working directory.",
+        parameters=types.Schema(
+            type=types.Type.OBJECT,
+            properties={
+                "file_path": types.Schema(
+                    type=types.Type.STRING,
+                    description="The filepath to the file to print its content from",
+                ),
+            },
+        ),
+    )    
              
         
 
