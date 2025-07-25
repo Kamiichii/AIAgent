@@ -3,7 +3,7 @@ from .get_files_info import schema_get_files_info
 from .get_file_content import schema_get_files_content
 from .run_python import schema_run_python
 from .write_file import schema_write_file
-CHARACTER_LIMIT = 10000
+
 SYSTEM_PROMPT = """
 You are a helpful AI coding agent.
 

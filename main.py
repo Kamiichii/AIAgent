@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 from functions.system_prompt import *
-
+from functions.call_function import call_function
 def main():
 
     load_dotenv()
@@ -28,9 +28,13 @@ def main():
  
     if response.function_calls: 
        for function_call_part in response.function_calls:     
-        print(f"Calling function: {function_call_part.name}({function_call_part.args})")
+        function_call_result = call_function(function_call_part=function_call_part,verbose=verbose)
+        if function_call_result.parts[0].function_response.response:
+           if verbose:
+            print(f"-> {function_call_result.parts[0].function_response.response}")
+        else:
+           raise Exception("function_call_result.parts[0].function_response.response is missing")
 
-    print(f"User prompt:{str(response.text)}")
     
     if verbose:       
         print(f"Prompt tokens: {str(response.usage_metadata.prompt_token_count)}")
